@@ -7,17 +7,39 @@ import sorcer.service.ContextException;
 import java.io.Serializable;
 
 /**
- * @author   Sarah & Mike
+ * @author   Team 8
+ * @version  1.0.0.0
  */
 public class Recipe implements Serializable {
+	/**
+	 * Name of the recipe
+	 */
     private String name;
-    private int price;
+	/**
+	 * Price of the recipe
+	 */
+	private int price;
+	/**
+	 * Amount of coffee used in recipe
+	 */
     private int amtCoffee;
-    private int amtMilk;
+	/**
+	 * Amount of milk used in recipe
+	 */
+	private int amtMilk;
+	/**
+	 * Amount of sugar used in recipe
+	 */
     private int amtSugar;
-    private int amtChocolate;
-    
-    public Recipe() {
+	/**
+	 * Amount of chocolate used in recipe
+	 */
+	private int amtChocolate;
+
+	/**
+	 * Constructor of Recipe class
+	 */
+	public Recipe() {
     	this.name = "";
     	this.price = 0;
     	this.amtCoffee = 0;
@@ -27,13 +49,13 @@ public class Recipe implements Serializable {
     }
     
     /**
-	 * @return   Returns the amtChocolate.
+	 * @return   Returns the amount of chocolate in recipe.
 	 */
     public int getAmtChocolate() {
 		return amtChocolate;
 	}
     /**
-	 * @param amtChocolate   The amtChocolate to setValue.
+	 * @param amtChocolate   The amount of chocolate to set.
 	 */
     public void setAmtChocolate(int amtChocolate) {
 		if (amtChocolate >= 0) {
@@ -41,13 +63,13 @@ public class Recipe implements Serializable {
 		} 
 	}
     /**
-	 * @return   Returns the amtCoffee.
+	 * @return   Returns the amount of choclate in recipe.
 	 */
     public int getAmtCoffee() {
 		return amtCoffee;
 	}
     /**
-	 * @param amtCoffee   The amtCoffee to setValue.
+	 * @param amtCoffee   The amount of coffee to set.
 	 */
     public void setAmtCoffee(int amtCoffee) {
 		if (amtCoffee >= 0) {
@@ -55,13 +77,13 @@ public class Recipe implements Serializable {
 		} 
 	}
     /**
-	 * @return   Returns the amtMilk.
+	 * @return   Returns the amount of milk in recipe.
 	 */
     public int getAmtMilk() {
 		return amtMilk;
 	}
     /**
-	 * @param amtMilk   The amtMilk to setValue.
+	 * @param amtMilk   The amount of milk to set.
 	 */
     public void setAmtMilk(int amtMilk) {
 		if (amtMilk >= 0) {
@@ -69,13 +91,13 @@ public class Recipe implements Serializable {
 		} 
 	}
     /**
-	 * @return   Returns the amtSugar.
+	 * @return   Returns the amount of sugar.
 	 */
     public int getAmtSugar() {
 		return amtSugar;
 	}
     /**
-	 * @param amtSugar   The amtSugar to setValue.
+	 * @param amtSugar   The amount of sugar to set.
 	 */
     public void setAmtSugar(int amtSugar) {
 		if (amtSugar >= 0) {
@@ -83,13 +105,13 @@ public class Recipe implements Serializable {
 		} 
 	}
     /**
-	 * @return   Returns the name.
+	 * @return   Returns the name of recipe.
 	 */
     public String getName() {
 		return name;
 	}
     /**
-	 * @param name   The name to setValue.
+	 * @param name   The name of recipe to set.
 	 */
     public void setName(String name) {
     	if(name != null) {
@@ -103,23 +125,39 @@ public class Recipe implements Serializable {
 		return price;
 	}
     /**
-	 * @param price   The price to setValue.
+	 * @param price   The price to set.
 	 */
     public void setPrice(int price) {
 		if (price >= 0) {
 			this.price = price;
 		} 
-	} 
+	}
+
+	/**
+	 * Checks is recipes are equal comparing their names
+	 * @param r recipe to compare with
+	 * @return Boolean value defining if recipes have the same name
+	 */
     public boolean equals(Recipe r) {
         if((this.name).equals(r.getName())) {
             return true;
         }
         return false;
     }
-    public String toString() {
+
+	/**
+	 * @return String representation of recipe (name of recipe)
+	 */
+	public String toString() {
     	return name;
     }
 
+	/**
+	 * Returns the recipe created from context
+	 * @param context Context containing data about recipe
+	 * @return Recipe created from context
+	 * @throws ContextException Exception that may be thrown during getting data from context
+	 */
 	static public Recipe getRecipe(Context context) throws ContextException {
 		Recipe r = new Recipe();
 		r.name = (String)context.getValue("name");
@@ -131,6 +169,12 @@ public class Recipe implements Serializable {
 		return r;
 	}
 
+	/**
+	 * Returns the ServiceContext containing information about recipe
+	 * @param recipe recipe to be passed to service context
+	 * @return ServiceContext with information about recipe
+	 * @throws ContextException Exception that may be thrown during creation of ServiceContext
+	 */
 	static public Context getContext(Recipe recipe) throws ContextException {
 		Context cxt = new ServiceContext();
 		cxt.putValue("name", recipe.getName());
