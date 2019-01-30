@@ -1,0 +1,5 @@
+1. Mo¿liwoœæ dodania 4, a nie 3 przepisów. (linia 25)
+2. Mo¿liwoœæ edycji nazwy przepisu na taki, który ju¿ istanieje. (editRecipe(Recipe oldRecipe, Recipe newRecipe) linia 125, u¿yto newRecipe zamiast oldRecipe).
+3. Mo¿liwoœæ dodania niedodatniej wartoœci cukru (CoffeMaker.java, (int amtCoffee, int amtMilk, int amtSugar, int amtChocolate), linia 149)
+4. Podczas zakupu produktu (purchaseBeverage(makeCoffee)) iloœæ kawy by³a dodawana, a nie odejmowana (CoffeMaker.java, makeCoffee(Recipe r, int amtPaid), linia 185.
+5. Podczas usuwania przepisu wartoœci w RecipeFull nie s¹ aktualizowane. (deleteRecipe(Recipe r), linia 92).
