@@ -14,12 +14,13 @@ import org.sorcer.test.SorcerTestRunner;
 import sorcer.service.*;
 
 import static org.junit.Assert.*;
-import static sorcer.co.operator.ent;
-import static sorcer.co.operator.inEnt;
+import static sorcer.co.operator.*;
+import static sorcer.co.operator.val;
 import static sorcer.eo.operator.*;
+import static sorcer.po.operator.ent;
 
-public class ScannerTest {
-    private final static Logger logger = LoggerFactory.getLogger(ScannerTest.class);
+public class PaymentImplTest {
+    private final static Logger logger = LoggerFactory.getLogger(PaymentImpl.class);
 
     private CoffeeMaker coffeeMaker;
     private PaymentImpl qr;
@@ -63,48 +64,31 @@ public class ScannerTest {
         kaw4.setAmtChocolate(0);
     }
 
-    @Test
-    public void addCode() throws Exception {
-        Exertion exertion = task(sig("scan", ScannerImpl.class),
-                context("scanner", inEnt("code", "c2,m1,s1,ch0,p32,kaw5")));
 
 
-        logger.info(context(exert(exertion)) + "\n" + get(context(exert(exertion)), ScannerImpl.RESULT_STATUS));
-    }
 
     @Test
-    public void chekIf() throws Exception {
-        Exertion exertion = task(sig("scan", ScannerImpl.class),
-                context("scanner", inEnt("code", "c1")));
+    public void testPay() throws Exception {
 
-        if (get(context(exert(exertion)), ScannerImpl.RESULT_STATUS).equals(true)) {
-            logger.info("checkIf", "ok");
-            logger.info("checkIf", get(context(exertion), ScannerImpl.RESULT_PATH));
+        Context context = context(val("name", "espresso"), val("price", 50),
+                val("amtCoffee", 6), val("amtMilk", 0),
+                val("amtSugar", 1), val("amtChocolate", 0));
 
-        } else {
-            logger.info("checkIf", "error");
-            logger.info("checkIf", get(context(exertion), ScannerImpl.RESULT_PATH));
-        }
-    }
+        Task coffee = task("coffee", sig("makeCoffee", CoffeeService.class), context(
+                val("recipe/name", "espresso"),
+                val("coffee/paid", 120),
+                val("coffee/change"),
+                val("recipe", context)));
 
-    @Test
-    public void scanTest() throws Exception {
-        String v1 = "c1,m1,s2,ch0,p123,kaw2";
-        int v2 = 2000;
 
-        Context context = context("scanner", inEnt("code", v1));
-        Task scanner = task("hej", sig("scan", ScannerImpl.class), context);
+        Task pay = task("pay", sig("pay", Payment.class), context(
+                val("payment/cost", context.getValue("price"))),
+                val("payment/balance", "120"));
+        val("isMobile", true);
 
-        Task coffee = task("coffee", sig("makeCoffee", CoffeeMaker.class), context(
-                ent("recipe/name", "kaw2"),
-                ent("coffee/paid", 2000),
-                ent("coffee/change"),
-                ent("recipe")));
-        if ((Boolean) exert(scanner).getValue("result/status")) {
-            Job drinkCoffee = job(scanner, coffee,
-                    pipe(outPoint(scanner, "result/value"), inPoint(coffee, "recipe")));
-        }else{
-            get(exert(scanner),ScannerImpl.RESULT_PATH);
-        }
+        Job drinkCoffee = job(pay, coffee,
+                pipe(outPoint(pay, "payment/result"), inPoint(coffee, "coffee/isPaid")));
+
+       assertEquals("payment/result", true);
     }
 }

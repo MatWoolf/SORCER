@@ -2,6 +2,7 @@ package edu.pjatk.inn.requestor;
 
 import edu.pjatk.inn.coffeemaker.CoffeeService;
 import edu.pjatk.inn.coffeemaker.Delivery;
+import edu.pjatk.inn.coffeemaker.Payment;
 import sorcer.core.requestor.ServiceRequestor;
 import sorcer.po.operator;
 import sorcer.service.*;
@@ -66,8 +67,13 @@ public class CoffeemakerRequestor extends ServiceRequestor {
             val("delivery/paid"),
             val("room", "101")));
 
-        Job drinkCoffee = job(coffee, delivery,
-            pipe(outPoint(coffee, "coffee/change"), inPoint(delivery, "delivery/paid")));
+        Task pay = task("pay", sig("pay", Payment.class), context(
+                val("payment/cost", getEspressoContext().getValue("price"))),
+                val("payment/balance", "120"));
+                val("isMobile", true);
+
+        Job drinkCoffee = job(pay, coffee,
+            pipe(outPoint(pay, "payment/result"), inPoint(coffee, "coffee/isPaid")));
 
         return drinkCoffee;
     }

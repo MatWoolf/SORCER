@@ -14,10 +14,11 @@ Task coffee = task("coffee", sig("makeCoffee", CoffeeService.class), context(
         proc("coffee/change"),
         proc("recipe", espresso)));
 
-Task delivery = task("delivery", sig("deliver", Delivery.class), context(
-        proc("location", "PJATK"),
-        proc("delivery/paid"),
-        proc("room", "101")));
+Task pay = task("pay", sig("pay", Payment.class), context(
+        proc("payment/cost", "50"),
+        proc("pay/balance", "120");
+        proc("isMobile", true);
 
-job(coffee, delivery,
-        pipe(outPoint(coffee, "coffee/change"), inPoint(delivery, "delivery/paid")));
+
+job(pay, coffee,
+        pipe(outPoint(pay, "payment/result"), inPoint(coffee, "coffee/isPaid")));

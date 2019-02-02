@@ -248,6 +248,10 @@ public class CoffeeMaker implements CoffeeMaking, CoffeeService {
 	public Context makeCoffee(Context context) throws RemoteException, ContextException {
 		String recipeName = (String)context.getValue("recipe/name");
 		Context recipeContext = (Context)context.getValue("recipe");
+		boolean isMobilePayment = (boolean) context.getValue("isMobile");
+		if(isMobilePayment){
+			context.getValue("coffee/isPaid");
+		}
 		if (recipeContext != null)
 			addRecipe(recipeContext);
 		int amtPaid = 0;
@@ -261,7 +265,6 @@ public class CoffeeMaker implements CoffeeMaking, CoffeeService {
 		if (context.getReturnPath() != null) {
 			context.setReturnValue(r.getPrice());
 		}
-
 		return context;
 	}
 }

@@ -3,9 +3,9 @@ package edu.pjatk.inn.coffeemaker;
 import edu.pjatk.inn.coffeemaker.impl.CoffeeMaker;
 import edu.pjatk.inn.coffeemaker.impl.Inventory;
 import edu.pjatk.inn.coffeemaker.impl.Recipe;
+import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.framework.TestCase;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,21 +14,20 @@ import org.sorcer.test.SorcerTestRunner;
 import sorcer.service.ContextException;
 import sorcer.service.Exertion;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static sorcer.eo.operator.*;
 
 
 @RunWith(SorcerTestRunner.class)
 @ProjectContext("examples/coffeemaker")
-public class InventoryTest extends TestCase{
+public class InventoryTest extends TestCase {
 
     private Inventory inventory;
 
     private final static Logger logger = LoggerFactory.getLogger(CoffeeMakerTest.class);
 
     @Before
-    public void setUp() throws ContextException {
+    public void setUp() throws Exception {
         inventory = new Inventory();
         super.setUp();
     }
